@@ -40,26 +40,49 @@ const complements = [
     "You've learned a lot of things, and that's pretty hard to do"
 ];
 
+const insult = [
+    "Away, you starvelling, you elf-skin, you dried neat’s-tongue, bull’s-pizzle, you stock-fish!",
+    "I am pigeon-liver'd and lack gall",
+    "His wit's as thick as a Tewkesburt mustard",
+    "I am sick when I do look on thee",
+    "I'll beat thee, but I would infect my hands",
+    "I scorn you, scurvy companion",
+    "More of your conversation would infect my brain",
+    "My wife's a hobbt horse!",
+    "Peace, ye fat guts!"
+];
+
 function getRandomComplement() {
     const randomIndex = Math.floor(Math.random() * complements.length);
     return complements[randomIndex];
 }
 
+function getRandomInsult() {
+    const randomIndex = Math.floor(Math.random() * insult.length);
+    return insult[randomIndex];
+}
+
 const app = express();
 
 app.get("/", function(req, res) {
-    res.sendFile(path.join(_dirname, "index.html"));
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.get("/complement", function(req, res) {
-    res
-    .json({
-        complement: getRandomComplement()
-    })
-    .end();
+    res.json({
+        complement: getRandomComplement(),
+    }).end();
 });
 
-app.use("/public", express.static(".public"));
+app.get("/insult", function(req, res) {
+    res.json({
+        insult: getRandomInsult()
+    }).end();
+});
 
-app.listen(3000);
-console.log("listening on http://localhost:3000");
+app.use("/public", express.static("./public"));
+
+var port = process.env.PORT || 3000;
+app.listen(port, "0.0.0.0", function() {
+   console.log(`Listening on Port ${port}`);
+});
